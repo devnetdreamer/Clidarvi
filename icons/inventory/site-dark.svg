@@ -1,0 +1,17 @@
+<!-- SPDX-License-Identifier: GPL-3.0-only
+     Copyright (C) 2026 devnetdreamer (https://github.com/devnetdreamer) and Clidarvi contributors -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="Enterprise site">
+  <g fill="none" stroke="#D9E2F0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 21V6l8-3 8 3v15"/>
+    <path d="M2.5 21h19"/>
+    <path d="M9 21v-4h6v4"/>
+  </g>
+  <g fill="#42D6CF">
+    <rect x="7" y="7" width="2.5" height="2.5" rx=".45"/>
+    <rect x="11" y="7" width="2.5" height="2.5" rx=".45"/>
+    <rect x="15" y="7" width="2.5" height="2.5" rx=".45"/>
+    <rect x="7" y="11.5" width="2.5" height="2.5" rx=".45"/>
+    <rect x="11" y="11.5" width="2.5" height="2.5" rx=".45"/>
+    <rect x="15" y="11.5" width="2.5" height="2.5" rx=".45"/>
+  </g>
+</svg>

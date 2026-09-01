@@ -1,0 +1,26 @@
+version: 2
+updates:
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    versioning-strategy: increase
+    labels:
+      - dependencies
+    # Netmiko 4.7 requires Paramiko <5. Keep compatible Paramiko 4.x updates
+    # eligible, but do not let a grouped PR create an unsatisfiable lock set.
+    ignore:
+      - dependency-name: paramiko
+        versions: [">=5.0.0"]
+    groups:
+      python-dependency-updates:
+        patterns:
+          - "*"
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 3
+    labels:
+      - dependencies

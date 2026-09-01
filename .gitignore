@@ -1,0 +1,32 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+.pytest_cache/
+.ruff_cache/
+.pyinstaller-cache/
+.local-assets/
+.venv*/
+build/
+dist/
+*.egg-info/
+outputs/
+# Local application state, inventories, and user-selected transcripts.
+devices.json
+devices.json.bak
+devices.json.corrupt-*
+known_hosts
+clidarvi_devices.json
+risk-acknowledgement.json
+clidarvi.lock
+Clidarvi-*.txt
+
+# Secrets and local environment files must remain ignored at every depth.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+id_rsa*
+id_dsa*
+id_ecdsa*
+id_ed25519*

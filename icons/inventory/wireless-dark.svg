@@ -1,0 +1,9 @@
+<!-- SPDX-License-Identifier: GPL-3.0-only
+     Copyright (C) 2026 devnetdreamer (https://github.com/devnetdreamer) and Clidarvi contributors -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="Wireless network device">
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M5 8.3a10 10 0 0 1 14 0M8 11.4a5.7 5.7 0 0 1 8 0M10.6 14.3a2 2 0 0 1 2.8 0" stroke="#42D6CF" stroke-width="1.8"/>
+    <path d="M12 15.2v3.3M8.5 21h7" stroke="#D9E2F0" stroke-width="1.8"/>
+  </g>
+  <circle cx="12" cy="18.5" r="1.7" fill="#D9E2F0"/>
+</svg>

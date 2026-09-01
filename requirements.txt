@@ -1,0 +1,4 @@
+# Convenience entry point for the official pinned CPython 3.13 snapshot.
+# The lock contains exact versions and SHA-256 hashes. Install it with:
+#   python -m pip install --require-hashes --only-binary=:all: -r requirements.txt
+-r requirements-lock/runtime-py313.txt

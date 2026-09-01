@@ -1,0 +1,40 @@
+<!-- SPDX-License-Identifier: GPL-3.0-only
+     Copyright (C) 2026 devnetdreamer (https://github.com/devnetdreamer) and Clidarvi contributors
+     Warranty, liability, and operational terms: see DISCLAIMER.md and TERMS.md. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="Clidarvi application symbol">
+  <defs>
+    <linearGradient id="badge" x1="128" y1="96" x2="896" y2="928" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#142747"/>
+      <stop offset="1" stop-color="#070d18"/>
+    </linearGradient>
+    <linearGradient id="route" x1="170" y1="190" x2="760" y2="850" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5c86ff"/>
+      <stop offset="1" stop-color="#42d6cf"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="48" y="48" width="928" height="928" rx="220" fill="url(#badge)"/>
+  <rect x="58" y="58" width="908" height="908" rx="210" fill="none" stroke="#2a3c5d" stroke-width="20"/>
+
+  <path
+    d="M724 252C657 193 568 163 476 170C290 184 148 338 152 526C156 715 310 863 499 855C590 851 674 819 740 758"
+    fill="none"
+    stroke="url(#route)"
+    stroke-width="116"
+    stroke-linecap="round"
+  />
+
+  <g fill="#f8fafc">
+    <circle cx="724" cy="252" r="60"/>
+    <circle cx="740" cy="758" r="60"/>
+    <circle cx="152" cy="526" r="46"/>
+  </g>
+  <g fill="#2457c5">
+    <circle cx="724" cy="252" r="22"/>
+    <circle cx="740" cy="758" r="22"/>
+    <circle cx="152" cy="526" r="17"/>
+  </g>
+
+  <path d="M390 400L525 512L390 624" fill="none" stroke="#f8fafc" stroke-width="78" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M548 632H688" fill="none" stroke="#42d6cf" stroke-width="66" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,9 @@
+<!-- SPDX-License-Identifier: GPL-3.0-only
+     Copyright (C) 2026 devnetdreamer (https://github.com/devnetdreamer) and Clidarvi contributors -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="Generic network device">
+  <g fill="none" stroke="#D9E2F0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m12 2.7 8 4.5v9.6l-8 4.5-8-4.5V7.2Z"/>
+    <path d="m4 7.2 8 4.5 8-4.5M12 11.7v9.6"/>
+  </g>
+  <circle cx="12" cy="7.1" r="1.6" fill="#42D6CF"/>
+</svg>

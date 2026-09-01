@@ -1,0 +1,2 @@
+# Reproducibility and review fingerprints require byte-identical lock files on every platform.
+requirements-lock/* text eol=lf

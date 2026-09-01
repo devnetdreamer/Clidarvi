@@ -1,0 +1,111 @@
+[build-system]
+requires = ["setuptools==84.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "clidarvi"
+version = "0.1.0a1"
+description = "Security-conscious desktop automation and SSH console for network devices"
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+license = "GPL-3.0-only"
+license-files = ["LICENSE"]
+authors = [
+    { name = "devnetdreamer" },
+]
+maintainers = [
+    { name = "devnetdreamer", email = "info@clidarvi.io" },
+]
+keywords = ["network-automation", "ssh", "netmiko", "paramiko", "pyqt"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: System Administrators",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: System :: Networking",
+]
+dependencies = [
+    "defusedxml>=0.7.1,<1",
+    "netmiko>=4.7,<5",
+    "paramiko>=4,<5",
+    "PyQt6>=6.7,<7",
+]
+
+[project.urls]
+Homepage = "https://github.com/devnetdreamer/Clidarvi"
+Repository = "https://github.com/devnetdreamer/Clidarvi"
+Issues = "https://github.com/devnetdreamer/Clidarvi/issues"
+Changelog = "https://github.com/devnetdreamer/Clidarvi/blob/main/CHANGELOG.md"
+Security = "https://github.com/devnetdreamer/Clidarvi/security/policy"
+
+[project.optional-dependencies]
+dev = [
+    "bandit>=1.9,<2",
+    "build>=1.2,<2",
+    "cyclonedx-python-lib[json-validation]>=11.12,<12",
+    "detect-secrets>=1.5,<2",
+    "pip-audit>=2.10,<3",
+    "pip-tools>=7.6.1,<8",
+    "ruff>=0.16.4,<1",
+    "setuptools>=84,<85",
+    "wheel>=0.48,<1",
+]
+
+[project.gui-scripts]
+clidarvi = "clidarvi:main"
+
+[tool.setuptools]
+py-modules = [
+    "clidarvi",
+    "clidarvi_core",
+    "clidarvi_io",
+    "clidarvi_policy",
+    "clidarvi_workers",
+]
+
+[tool.setuptools.data-files]
+"share/clidarvi" = [
+    "DISCLAIMER.md",
+    "LICENSE",
+    "PRIVACY.md",
+    "SECURITY.md",
+    "TERMS.md",
+    "THIRD_PARTY_NOTICES.md",
+    "TRADEMARKS.md",
+    "clidarvi_symbol.svg",
+]
+"share/clidarvi/docs" = [
+    "docs/FIELD_TEST_CHECKLIST.md",
+]
+"share/clidarvi/icons/inventory" = [
+    "icons/inventory/*.svg",
+]
+"share/clidarvi/requirements-lock" = [
+    "requirements-lock/runtime-py313.txt",
+]
+"share/clidarvi/sbom" = [
+    "sbom/clidarvi-0.1.0a1.cdx.json",
+]
+"share/doc/clidarvi" = [
+    "CHANGELOG.md",
+    "README.md",
+]
+"share/doc/clidarvi/docs" = [
+    "docs/INVENTORY_FORMAT.md",
+    "docs/RELEASE_NOTES_v0.1.0a1.md",
+    "docs/USER_GUIDE.md",
+    "docs/VERIFY_RELEASE.md",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

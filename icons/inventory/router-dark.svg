@@ -1,0 +1,11 @@
+<!-- SPDX-License-Identifier: GPL-3.0-only
+     Copyright (C) 2026 devnetdreamer (https://github.com/devnetdreamer) and Clidarvi contributors -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="Network router">
+  <rect x="2.5" y="5" width="19" height="14" rx="3" fill="none" stroke="#D9E2F0" stroke-width="1.8"/>
+  <g fill="none" stroke="#42D6CF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6.5 10h11"/>
+    <path d="m15 7.7 2.5 2.3-2.5 2.3"/>
+    <path d="M17.5 14h-11"/>
+    <path d="m9 11.7-2.5 2.3L9 16.3"/>
+  </g>
+</svg>

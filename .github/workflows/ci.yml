@@ -1,0 +1,439 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "17 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  PYTHONDONTWRITEBYTECODE: "1"
+  QT_QPA_PLATFORM: offscreen
+
+jobs:
+  pinned-release-snapshot:
+    name: Pinned CPython 3.13 snapshot
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      # Every third-party action is pinned to a verified upstream release commit.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: |
+            requirements-lock/build.txt
+            requirements-lock/dev-py313.txt
+
+      - name: Install Ubuntu Qt runtime
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends libegl1
+
+      - name: Install pinned build toolchain
+        run: >-
+          python -m pip install
+          --require-hashes
+          --only-binary=:all:
+          --requirement requirements-lock/build.txt
+      - name: Install pinned development snapshot
+        run: >-
+          python -m pip install
+          --require-hashes
+          --only-binary=:all:
+          --requirement requirements-lock/dev-py313.txt
+      - name: Verify installed dependencies
+        run: python -m pip check
+
+      - name: Lint
+        run: ruff check .
+      - name: Format check
+        run: ruff format --check .
+      - name: Static security scan
+        run: >-
+          bandit -q -r
+          clidarvi.py
+          clidarvi_core.py
+          clidarvi_io.py
+          clidarvi_policy.py
+          clidarvi_workers.py
+          scripts
+          -ll
+      - name: Secret scan
+        run: >-
+          git ls-files -z |
+          xargs -0 detect-secrets-hook
+          --exclude-files '(^|/)LICENSE$|^sbom/.*\.cdx\.json$'
+      - name: Source tests
+        run: python -B -m unittest discover -s tests -v
+
+      - name: Verify committed SBOM is current
+        run: python scripts/generate_sbom.py --check --validate-schema
+      # The reviewed advisory lists Paramiko <=4.0.0 as affected and no patched
+      # release. Netmiko 4.7 requires Paramiko <5. Clidarvi keeps a scoped,
+      # tested mitigation but does not represent it as an upstream fix.
+      - name: Audit exact runtime lock
+        run: >-
+          pip-audit
+          --requirement requirements-lock/runtime-py313.txt
+          --ignore-vuln PYSEC-2026-2858
+          --disable-pip
+      - name: Audit exact build lock
+        run: >-
+          pip-audit
+          --requirement requirements-lock/build.txt
+          --disable-pip
+      - name: Audit exact development lock
+        run: >-
+          pip-audit
+          --requirement requirements-lock/dev-py313.txt
+          --ignore-vuln PYSEC-2026-2858
+          --disable-pip
+
+      - name: Build distributions without an isolated floating toolchain
+        run: python -m build --no-isolation
+      - name: Create clean pinned runtime and install the wheel
+        run: |
+          python -m venv --without-pip "${RUNNER_TEMP}/clidarvi-runtime"
+          python -m pip --python "${RUNNER_TEMP}/clidarvi-runtime/bin/python" install \
+            --require-hashes \
+            --only-binary=:all: \
+            --requirement requirements-lock/runtime-py313.txt
+          python -m pip --python "${RUNNER_TEMP}/clidarvi-runtime/bin/python" install \
+            --no-deps \
+            dist/clidarvi-0.1.0a1-py3-none-any.whl
+          python -m pip --python "${RUNNER_TEMP}/clidarvi-runtime/bin/python" check
+      - name: Test the installed wheel outside the source tree
+        working-directory: ${{ runner.temp }}
+        run: >-
+          "${RUNNER_TEMP}/clidarvi-runtime/bin/python"
+          -B -m unittest discover
+          -s "${GITHUB_WORKSPACE}/tests"
+          -v
+
+      - name: Create commit-bound candidate payload
+        run: |
+          cp sbom/clidarvi-0.1.0a1.cdx.json dist/
+          cp requirements-lock/runtime-py313.txt \
+            dist/clidarvi-0.1.0a1-runtime-py313.txt
+          printf '%s\n' "${GITHUB_SHA}" \
+            > dist/clidarvi-0.1.0a1-source-commit.txt
+          python scripts/write_checksums.py \
+            dist/clidarvi-0.1.0a1-py3-none-any.whl \
+            dist/clidarvi-0.1.0a1.tar.gz \
+            dist/clidarvi-0.1.0a1.cdx.json \
+            dist/clidarvi-0.1.0a1-runtime-py313.txt \
+            dist/clidarvi-0.1.0a1-source-commit.txt \
+            --output dist/SHA256SUMS \
+            --require-exact-directory
+          python scripts/write_checksums.py \
+            dist/clidarvi-0.1.0a1-py3-none-any.whl \
+            dist/clidarvi-0.1.0a1.tar.gz \
+            dist/clidarvi-0.1.0a1.cdx.json \
+            dist/clidarvi-0.1.0a1-runtime-py313.txt \
+            dist/clidarvi-0.1.0a1-source-commit.txt \
+            --output dist/SHA256SUMS \
+            --check \
+            --require-exact-directory
+      # This transfer artifact exists only so the final gate can consume the
+      # bytes built above. It is emitted only for the official main branch or
+      # exact release tag and is not a release candidate until every required job passes.
+      - name: Transfer tested payload to the final gate
+        if: >-
+          github.event_name == 'push' &&
+          github.repository == 'devnetdreamer/Clidarvi' &&
+          (github.ref == 'refs/heads/main' ||
+          github.ref == 'refs/tags/v0.1.0a1')
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: untrusted-ci-build-${{ github.sha }}
+          path: |
+            dist/clidarvi-0.1.0a1-py3-none-any.whl
+            dist/clidarvi-0.1.0a1.tar.gz
+            dist/clidarvi-0.1.0a1.cdx.json
+            dist/clidarvi-0.1.0a1-runtime-py313.txt
+            dist/clidarvi-0.1.0a1-source-commit.txt
+            dist/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 3
+
+  locked-platform-compatibility:
+    name: Locked wheel / ${{ matrix.platform }} / Python 3.13
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: Windows
+            os: windows-2025
+          - platform: macOS
+            os: macos-15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: |
+            requirements-lock/build.txt
+            requirements-lock/runtime-py313.txt
+      - name: Install exact hashed build and runtime snapshots
+        shell: bash
+        run: |
+          python -m pip install \
+            --require-hashes \
+            --only-binary=:all: \
+            --requirement requirements-lock/build.txt
+          python -m pip install \
+            --require-hashes \
+            --only-binary=:all: \
+            --requirement requirements-lock/runtime-py313.txt
+          python -m pip check
+      - name: Build and install the wheel
+        shell: bash
+        run: |
+          python -m build --no-isolation --wheel
+          python -m pip install --no-deps --force-reinstall dist/clidarvi-0.1.0a1-py3-none-any.whl
+          python -m pip check
+      - name: Test the installed wheel outside the source tree
+        shell: bash
+        working-directory: ${{ runner.temp }}
+        run: >-
+          python -B -m unittest discover
+          -s "${GITHUB_WORKSPACE}/tests"
+          -v
+
+  floating-compatibility:
+    name: Floating compatibility / Ubuntu / Python ${{ matrix.python-version }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - name: Install Ubuntu Qt runtime
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends libegl1
+      # This job intentionally tests the declared version ranges. It is not the
+      # pinned release snapshot and must never produce published artifacts.
+      - name: Install current compatible dependencies
+        run: >-
+          python -m pip install
+          --only-binary=:all:
+          .
+      - name: Verify dependency environment
+        run: python -m pip check
+      - name: Test installed package outside the source tree
+        working-directory: ${{ runner.temp }}
+        run: >-
+          python -B -m unittest discover
+          -s "${GITHUB_WORKSPACE}/tests"
+          -v
+
+  release-candidate:
+    name: Promote commit-bound release candidate
+    needs:
+      - pinned-release-snapshot
+      - locked-platform-compatibility
+      - floating-compatibility
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main' &&
+      github.repository == 'devnetdreamer/Clidarvi'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Download payload from the pinned build
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: untrusted-ci-build-${{ github.sha }}
+          path: dist
+      - name: Revalidate commit binding and complete checksum set
+        run: |
+          test "$(cat dist/clidarvi-0.1.0a1-source-commit.txt)" = "${GITHUB_SHA}"
+          python scripts/write_checksums.py \
+            dist/clidarvi-0.1.0a1-py3-none-any.whl \
+            dist/clidarvi-0.1.0a1.tar.gz \
+            dist/clidarvi-0.1.0a1.cdx.json \
+            dist/clidarvi-0.1.0a1-runtime-py313.txt \
+            dist/clidarvi-0.1.0a1-source-commit.txt \
+            --output dist/SHA256SUMS \
+            --check \
+            --require-exact-directory
+      - name: Upload gated release candidate
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: clidarvi-0.1.0a1-candidate-${{ github.sha }}
+          path: |
+            dist/clidarvi-0.1.0a1-py3-none-any.whl
+            dist/clidarvi-0.1.0a1.tar.gz
+            dist/clidarvi-0.1.0a1.cdx.json
+            dist/clidarvi-0.1.0a1-runtime-py313.txt
+            dist/clidarvi-0.1.0a1-source-commit.txt
+            dist/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 14
+
+  tagged-release-provenance:
+    name: Attest exact tagged release payload
+    needs:
+      - pinned-release-snapshot
+      - locked-platform-compatibility
+      - floating-compatibility
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/tags/v0.1.0a1' &&
+      github.repository == 'devnetdreamer/Clidarvi'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Require a verified signed annotated release tag
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          github-token: ${{ github.token }}
+          retries: 3
+          script: |
+            const expectedTag = "v0.1.0a1";
+            const expectedRef = "refs/tags/" + expectedTag;
+            const expectedTaggerName = "devnetdreamer";
+            const expectedTaggerEmail =
+              "314994350+devnetdreamer@users.noreply.github.com";
+
+            if (context.eventName !== "push" || context.ref !== expectedRef) {
+              throw new Error("Release attestation requires the exact release-tag push.");
+            }
+            const {data: repository} = await github.rest.repos.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            if (repository.private !== false || repository.visibility !== "public") {
+              throw new Error("Official release attestation requires a public repository.");
+            }
+
+            const {data: ref} = await github.rest.git.getRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "tags/" + expectedTag,
+            });
+            if (ref.ref !== expectedRef || ref.object.type !== "tag") {
+              throw new Error(
+                "Release tag must be an annotated tag object; lightweight tags are rejected."
+              );
+            }
+
+            const tagObjectSha = ref.object.sha;
+            const {data: tag} = await github.rest.git.getTag({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_sha: tagObjectSha,
+            });
+            const verification = tag.verification ?? {};
+            if (
+              tag.sha !== tagObjectSha ||
+              tag.tag !== expectedTag ||
+              tag.object.type !== "commit" ||
+              tag.object.sha !== context.sha ||
+              tag.tagger?.name !== expectedTaggerName ||
+              tag.tagger?.email !== expectedTaggerEmail ||
+              verification.verified !== true ||
+              verification.reason !== "valid" ||
+              !verification.signature ||
+              !verification.payload ||
+              !verification.verified_at
+            ) {
+              throw new Error(
+                "Release tag failed identity/signature verification: reason=" +
+                  (verification.reason ?? "missing") +
+                  "."
+              );
+            }
+      - name: Download payload built from this tag
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: untrusted-ci-build-${{ github.sha }}
+          path: dist
+      - name: Revalidate tag, commit binding, and complete checksum set
+        run: |
+          test "${GITHUB_REF_NAME}" = "v0.1.0a1"
+          test "$(git rev-list -n 1 "${GITHUB_REF_NAME}")" = "${GITHUB_SHA}"
+          test "$(cat dist/clidarvi-0.1.0a1-source-commit.txt)" = "${GITHUB_SHA}"
+          python scripts/write_checksums.py \
+            dist/clidarvi-0.1.0a1-py3-none-any.whl \
+            dist/clidarvi-0.1.0a1.tar.gz \
+            dist/clidarvi-0.1.0a1.cdx.json \
+            dist/clidarvi-0.1.0a1-runtime-py313.txt \
+            dist/clidarvi-0.1.0a1-source-commit.txt \
+            --output dist/SHA256SUMS \
+            --check \
+            --require-exact-directory
+      - name: Generate GitHub/Sigstore build provenance
+        id: attest
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: |
+            dist/clidarvi-0.1.0a1-py3-none-any.whl
+            dist/clidarvi-0.1.0a1.tar.gz
+            dist/clidarvi-0.1.0a1.cdx.json
+            dist/clidarvi-0.1.0a1-runtime-py313.txt
+            dist/clidarvi-0.1.0a1-source-commit.txt
+            dist/SHA256SUMS
+      - name: Stage the attestation bundle under a stable release filename
+        env:
+          ATTESTATION_BUNDLE_PATH: ${{ steps.attest.outputs.bundle-path }}
+        run: |
+          test -n "${ATTESTATION_BUNDLE_PATH}"
+          test -s "${ATTESTATION_BUNDLE_PATH}"
+          test ! -e dist/clidarvi-0.1.0a1-attestation.sigstore.json
+          python -m json.tool "${ATTESTATION_BUNDLE_PATH}" > /dev/null
+          cp -- "${ATTESTATION_BUNDLE_PATH}" dist/clidarvi-0.1.0a1-attestation.sigstore.json
+          test -s dist/clidarvi-0.1.0a1-attestation.sigstore.json
+      - name: Upload attested tag payload and verification bundle
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: clidarvi-0.1.0a1-attested-${{ github.sha }}
+          path: |
+            dist/clidarvi-0.1.0a1-py3-none-any.whl
+            dist/clidarvi-0.1.0a1.tar.gz
+            dist/clidarvi-0.1.0a1.cdx.json
+            dist/clidarvi-0.1.0a1-runtime-py313.txt
+            dist/clidarvi-0.1.0a1-source-commit.txt
+            dist/SHA256SUMS
+            dist/clidarvi-0.1.0a1-attestation.sigstore.json
+          if-no-files-found: error
+          retention-days: 14

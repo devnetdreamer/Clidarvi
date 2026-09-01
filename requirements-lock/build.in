@@ -1,0 +1,10 @@
+# Reproducible build and lock-generation toolchain.
+build==1.5.0
+# ``build`` conditionally requires this package on Windows.  Keep it
+# unconditional so the cross-platform hashed lock is complete when compiled
+# on macOS or Linux.
+colorama==0.4.6
+pip==26.2.1
+pip-tools==7.6.1
+setuptools==84.0.0
+wheel==0.48.0

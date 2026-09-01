@@ -1,0 +1,51 @@
+name: Bug report
+description: Report a reproducible Clidarvi problem that is not a security vulnerability.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Do not post vulnerabilities, credentials, real hostnames, non-documentation IP addresses,
+        raw configurations, known-host files, or transcripts. Use the private routes in
+        SECURITY.md for security issues.
+  - type: input
+    id: version
+    attributes:
+      label: Clidarvi version
+      placeholder: 0.1.0a1
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Operating system and Python version.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Use fake data and a mock or lab device only.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: checkboxes
+    id: authorization
+    attributes:
+      label: Safety confirmation
+      options:
+        - label: I reproduced this only with fake data and systems I am authorized to control.
+          required: true

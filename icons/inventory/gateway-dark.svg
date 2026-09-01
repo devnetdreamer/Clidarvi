@@ -1,0 +1,15 @@
+<!-- SPDX-License-Identifier: GPL-3.0-only
+     Copyright (C) 2026 devnetdreamer (https://github.com/devnetdreamer) and Clidarvi contributors -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="Multifunction security gateway">
+  <g fill="none" stroke="#D9E2F0" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M8 5h6l3.5 3.5v7L14 19H8l-3.5-3.5v-7Z"/>
+    <path d="M2.7 12h1.8M17.5 9h3.8M17.5 15h3.8"/>
+    <path d="M8.6 12H6.4M13 10.9l2.5-1.4M13 13.1l2.5 1.4"/>
+  </g>
+  <g fill="#42D6CF">
+    <circle cx="2.7" cy="12" r="1.3"/>
+    <circle cx="21.3" cy="9" r="1.3"/>
+    <circle cx="21.3" cy="15" r="1.3"/>
+    <circle cx="11" cy="12" r="2.2"/>
+  </g>
+</svg>
