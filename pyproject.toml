@@ -43,7 +43,7 @@ Security = "https://github.com/devnetdreamer/Clidarvi/security/policy"
 [project.optional-dependencies]
 dev = [
     "bandit>=1.9,<2",
-    "build>=1.2,<2",
+    "build>=1.6.0,<2",
     "cyclonedx-python-lib[json-validation]>=11.12,<12",
     "detect-secrets>=1.5,<2",
     "pip-audit>=2.10,<3",
