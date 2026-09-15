@@ -1,5 +1,5 @@
 # Reproducible build and lock-generation toolchain.
-build==1.5.0
+build==1.6.1
 # ``build`` conditionally requires this package on Windows.  Keep it
 # unconditional so the cross-platform hashed lock is complete when compiled
 # on macOS or Linux.
