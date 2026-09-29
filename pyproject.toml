@@ -28,7 +28,7 @@ classifiers = [
 ]
 dependencies = [
     "defusedxml>=0.7.1,<1",
-    "netmiko>=4.7,<5",
+    "netmiko>=4.8.0,<5",
     "paramiko>=4,<5",
     "PyQt6>=6.7,<7",
 ]
@@ -43,12 +43,12 @@ Security = "https://github.com/devnetdreamer/Clidarvi/security/policy"
 [project.optional-dependencies]
 dev = [
     "bandit>=1.9,<2",
-    "build>=1.2,<2",
+    "build>=1.6.1,<2",
     "cyclonedx-python-lib[json-validation]>=11.12,<12",
     "detect-secrets>=1.5,<2",
     "pip-audit>=2.10,<3",
     "pip-tools>=7.6.1,<8",
-    "ruff>=0.16.4,<1",
+    "ruff>=0.16.9,<1",
     "setuptools>=84,<85",
     "wheel>=0.48,<1",
 ]

@@ -6,4 +6,4 @@ bandit>=1.9,<2
 cyclonedx-python-lib[json-validation]>=11.12,<12
 detect-secrets>=1.5,<2
 pip-audit>=2.10,<3
-ruff>=0.16.4,<1
+ruff>=0.16.9,<1
