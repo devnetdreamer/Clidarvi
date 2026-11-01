@@ -156,7 +156,7 @@ jobs:
           github.repository == 'devnetdreamer/Clidarvi' &&
           (github.ref == 'refs/heads/main' ||
           github.ref == 'refs/tags/v0.1.0a1')
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: untrusted-ci-build-${{ github.sha }}
           path: |
@@ -289,7 +289,7 @@ jobs:
             --check \
             --require-exact-directory
       - name: Upload gated release candidate
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: clidarvi-0.1.0a1-candidate-${{ github.sha }}
           path: |
@@ -424,7 +424,7 @@ jobs:
           cp -- "${ATTESTATION_BUNDLE_PATH}" dist/clidarvi-0.1.0a1-attestation.sigstore.json
           test -s dist/clidarvi-0.1.0a1-attestation.sigstore.json
       - name: Upload attested tag payload and verification bundle
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: clidarvi-0.1.0a1-attested-${{ github.sha }}
           path: |
