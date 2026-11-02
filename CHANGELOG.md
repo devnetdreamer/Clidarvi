@@ -100,6 +100,12 @@ release yet.
 
 ### Changed
 
+- Refreshed the pinned build and development snapshots to setuptools 84.1.0, urllib3 2.8.0,
+  certifi 2026.10.23, filelock 4.2.6, and msgpack 1.2.4, clearing the advisories pip-audit
+  reported against the previous pins; regenerated the hashed locks. The pinned runtime snapshot
+  and the SBOM are byte-for-byte unchanged.
+- Raised the pinned CI actions to setup-python 7.1.0, upload-artifact 7.0.2, and
+  download-artifact 8.0.2; each commit pin was checked against the upstream release tag.
 - Refreshed the reviewed CPython 3.13 snapshots to cryptography 50.0.1 with OpenSSL 4.0.2,
   PyQt6-Qt6 6.11.2, Click 8.5.0, filelock 3.32.5, msgpack 1.2.2, platformdirs 4.11.7, and Ruff
   0.16.5; regenerated the binary-only hashes, third-party notices, and CycloneDX SBOM.
@@ -109,6 +115,11 @@ release yet.
 
 ### Fixed
 
+- Keep the test suite from blocking when the installed Netmiko is not the audited 4.7.0: the
+  experimental-automation GUI and worker tests that exercise gates beyond the runtime check now
+  mock that check (and assert it was consulted) instead of letting a real modal warning stall the
+  offscreen suite until the CI job timeout. The gate's own acceptance, mismatch, missing-package,
+  and worker-revalidation tests still run the real check.
 - Bind the exact 31-file runtime asset set to the wheel `RECORD` that owns the imported module,
   validating module, metadata, asset paths, sizes, SHA-256 digests, and one coherent native-prefix or
   target layout. Missing, modified, partial, ambiguous, or stale installations fail closed; verified
