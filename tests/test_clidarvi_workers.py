@@ -641,17 +641,21 @@ class WorkerHardeningTests(unittest.TestCase):
                     seen_profiles.append(kwargs["device_type"])
                     return _SuccessfulConnection()
 
-                worker = clidarvi_workers.AutomationWorker(
-                    [_automation_device(device_type)],
-                    "show version",
-                    allow_experimental_automation=True,
-                    connector_factory=connector,
-                    socket_factory=_passive_socket_factory,
-                )
-                worker.log.connect(logs.append, Qt.ConnectionType.DirectConnection)
-                worker.finished_with_log.connect(transcripts.append)
+                with patch(
+                    "clidarvi_workers.importlib_metadata.version",
+                    return_value=clidarvi_workers.EXPERIMENTAL_AUTOMATION_NETMIKO_VERSION,
+                ):
+                    worker = clidarvi_workers.AutomationWorker(
+                        [_automation_device(device_type)],
+                        "show version",
+                        allow_experimental_automation=True,
+                        connector_factory=connector,
+                        socket_factory=_passive_socket_factory,
+                    )
+                    worker.log.connect(logs.append, Qt.ConnectionType.DirectConnection)
+                    worker.finished_with_log.connect(transcripts.append)
 
-                worker.run()
+                    worker.run()
 
                 self.assertFalse(worker.had_error())
                 self.assertEqual(seen_profiles, [device_type])
@@ -856,19 +860,23 @@ class WorkerHardeningTests(unittest.TestCase):
 
     def test_wholesale_same_profile_target_replacement_is_rejected_before_network(self):
         network_calls = []
-        worker = clidarvi_workers.AutomationWorker(
-            [_automation_device("fortinet", host="approved.example.net")],
-            "show version",
-            allow_experimental_automation=True,
-            connector_factory=lambda **_kwargs: network_calls.append("connector"),
-            socket_factory=lambda *_args, **_kwargs: network_calls.append("socket"),
-        )
-        worker.devices = (
-            _automation_device("fortinet", host="different.example.net") | {"port": 2222},
-        )
+        with patch(
+            "clidarvi_workers.importlib_metadata.version",
+            return_value=clidarvi_workers.EXPERIMENTAL_AUTOMATION_NETMIKO_VERSION,
+        ):
+            worker = clidarvi_workers.AutomationWorker(
+                [_automation_device("fortinet", host="approved.example.net")],
+                "show version",
+                allow_experimental_automation=True,
+                connector_factory=lambda **_kwargs: network_calls.append("connector"),
+                socket_factory=lambda *_args, **_kwargs: network_calls.append("socket"),
+            )
+            worker.devices = (
+                _automation_device("fortinet", host="different.example.net") | {"port": 2222},
+            )
 
-        with self.assertRaisesRegex(ValueError, "(?i)(target|host|port).*changed"):
-            worker._run_devices()
+            with self.assertRaisesRegex(ValueError, "(?i)(target|host|port).*changed"):
+                worker._run_devices()
 
         self.assertEqual(network_calls, [])
 
@@ -883,19 +891,23 @@ class WorkerHardeningTests(unittest.TestCase):
         for mutation, expected in cases:
             with self.subTest(mutation=mutation):
                 network_calls = []
-                worker = clidarvi_workers.AutomationWorker(
-                    [_automation_device("fortinet", host="approved.example.net")],
-                    "show version",
-                    allow_experimental_automation=True,
-                    connector_factory=lambda **_kwargs: network_calls.append("connector"),
-                    socket_factory=lambda *_args, **_kwargs: network_calls.append("socket"),
-                )
-                replacement = _automation_device("fortinet", host="approved.example.net")
-                replacement.update(mutation)
-                worker.devices = (replacement,)
+                with patch(
+                    "clidarvi_workers.importlib_metadata.version",
+                    return_value=clidarvi_workers.EXPERIMENTAL_AUTOMATION_NETMIKO_VERSION,
+                ):
+                    worker = clidarvi_workers.AutomationWorker(
+                        [_automation_device("fortinet", host="approved.example.net")],
+                        "show version",
+                        allow_experimental_automation=True,
+                        connector_factory=lambda **_kwargs: network_calls.append("connector"),
+                        socket_factory=lambda *_args, **_kwargs: network_calls.append("socket"),
+                    )
+                    replacement = _automation_device("fortinet", host="approved.example.net")
+                    replacement.update(mutation)
+                    worker.devices = (replacement,)
 
-                with self.assertRaisesRegex(ValueError, expected):
-                    worker._run_devices()
+                    with self.assertRaisesRegex(ValueError, expected):
+                        worker._run_devices()
 
                 self.assertEqual(network_calls, [])
 

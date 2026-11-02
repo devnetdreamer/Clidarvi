@@ -3844,12 +3844,18 @@ class MainWindowInventoryTests(unittest.TestCase):
                     patch.object(self.window, "_ensure_network_terms_accepted", return_value=True),
                     patch.object(self.window, "_has_locally_trusted_host_key", return_value=True),
                     patch.object(
+                        clidarvi,
+                        "validate_experimental_automation_runtime",
+                        return_value=clidarvi_workers.EXPERIMENTAL_AUTOMATION_NETMIKO_VERSION,
+                    ) as runtime_check,
+                    patch.object(
                         clidarvi.QInputDialog, "getText", return_value=response
                     ) as text_prompt,
                     patch.object(clidarvi, "AutomationWorker", side_effect=worker_factory),
                 ):
                     self.window.run_automation()
 
+                runtime_check.assert_called_once_with()
                 self.assertEqual(text_prompt.call_count, 1)
                 self.assertIn(phrase, text_prompt.call_args.args[2])
                 self.assertFalse(dispatches)
@@ -3891,6 +3897,11 @@ class MainWindowInventoryTests(unittest.TestCase):
             patch.object(self.window, "_ensure_network_terms_accepted", return_value=True),
             patch.object(self.window, "_has_locally_trusted_host_key", return_value=True),
             patch.object(
+                clidarvi,
+                "validate_experimental_automation_runtime",
+                return_value=clidarvi_workers.EXPERIMENTAL_AUTOMATION_NETMIKO_VERSION,
+            ) as runtime_check,
+            patch.object(
                 clidarvi.QInputDialog,
                 "getText",
                 side_effect=[(phrase, True), ("admin", True), ("password", True)],
@@ -3899,6 +3910,7 @@ class MainWindowInventoryTests(unittest.TestCase):
         ):
             self.window.run_automation()
 
+        runtime_check.assert_called_once_with()
         self.assertEqual(len(dispatches), 1)
         dispatch = dispatches[0]
         self.assertEqual(len(dispatch["devices"]), 1)
@@ -4023,6 +4035,11 @@ class MainWindowInventoryTests(unittest.TestCase):
                     patch.object(self.window, "_ensure_network_terms_accepted", return_value=True),
                     patch.object(self.window, "_has_locally_trusted_host_key", return_value=True),
                     patch.object(
+                        clidarvi,
+                        "validate_experimental_automation_runtime",
+                        return_value=clidarvi_workers.EXPERIMENTAL_AUTOMATION_NETMIKO_VERSION,
+                    ) as runtime_check,
+                    patch.object(
                         clidarvi.QInputDialog,
                         "getText",
                         side_effect=[
@@ -4041,6 +4058,7 @@ class MainWindowInventoryTests(unittest.TestCase):
                 ):
                     self.window.run_automation()
 
+                runtime_check.assert_called_once_with()
                 self.assertEqual(len(dispatches), 1)
                 dispatch = dispatches[0]
                 self.assertTrue(dispatch["kwargs"]["allow_experimental_automation"])
