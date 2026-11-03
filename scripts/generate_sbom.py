@@ -33,30 +33,30 @@ HASH_RE = re.compile(r"--hash=sha256:([0-9a-f]{64})")
 # permitted-artifact hash change requires a fresh license review and explicit
 # updates to both the reviewed mapping and fingerprint below.
 REVIEWED_RUNTIME_LOCK_SHA256 = (
-    "44643ce5bbdc6b657b214b948e6c66ed1750b9332c61b7a8034ff59c0d5b254d"  # pragma: allowlist secret
+    "a23673a6efbe2d0b3168cc11a4b8519185b95f6bcbc282ce685da46a19dd7e17"  # pragma: allowlist secret
 )
 REVIEWED_RUNTIME_LICENSES = {
     "bcrypt": ("5.0.0", "Apache-2.0"),
     "cffi": ("2.1.1", "MIT-0"),
-    "cryptography": ("50.0.1", "Apache-2.0 OR BSD-3-Clause"),
+    "cryptography": ("50.0.2", "Apache-2.0 OR BSD-3-Clause"),
     "defusedxml": ("0.7.1", "PSF-2.0"),
     "invoke": ("3.0.3", "BSD-2-Clause"),
     "markdown-it-py": ("4.2.0", "MIT"),
     "mdurl": ("0.1.2", "MIT"),
     "netmiko": ("4.7.0", "MIT AND Python-2.0"),
-    "ntc-templates": ("9.2.0", "Apache-2.0"),
+    "ntc-templates": ("9.3.0", "Apache-2.0"),
     "paramiko": ("4.0.0", "LGPL-2.1-or-later"),
-    "pycparser": ("3.0", "BSD-3-Clause"),
+    "pycparser": ("3.12", "BSD-3-Clause"),
     "pygments": ("2.21.0", "BSD-2-Clause"),
     "pynacl": ("1.6.2", "Apache-2.0 AND ISC"),
-    "pyqt6": ("6.11.0", "GPL-3.0-only"),
-    "pyqt6-qt6": ("6.11.2", "LGPL-3.0-only AND GPL-3.0-only"),
-    "pyqt6-sip": ("13.12.0", "BSD-2-Clause"),
+    "pyqt6": ("6.12.0", "GPL-3.0-only"),
+    "pyqt6-qt6": ("6.12.0", "LGPL-3.0-only AND GPL-3.0-only"),
+    "pyqt6-sip": ("13.13.0", "BSD-2-Clause"),
     "pyserial": ("3.5", "BSD-3-Clause"),
     "pyyaml": ("6.0.3", "MIT"),
     "rich": ("15.0.0", "MIT"),
     "ruamel-yaml": ("0.19.1", "MIT"),
-    "scp": ("0.16.1", "LGPL-2.1-or-later"),
+    "scp": ("0.16.2", "LGPL-2.1-or-later"),
     "textfsm": ("2.1.0", "Apache-2.0"),
 }
 

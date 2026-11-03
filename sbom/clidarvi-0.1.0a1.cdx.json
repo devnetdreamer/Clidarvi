@@ -27,16 +27,16 @@
       "version": "2.1.1"
     },
     {
-      "bom-ref": "pkg:pypi/cryptography@50.0.1",
+      "bom-ref": "pkg:pypi/cryptography@50.0.2",
       "licenses": [
         {
           "expression": "Apache-2.0 OR BSD-3-Clause"
         }
       ],
       "name": "cryptography",
-      "purl": "pkg:pypi/cryptography@50.0.1",
+      "purl": "pkg:pypi/cryptography@50.0.2",
       "type": "library",
-      "version": "50.0.1"
+      "version": "50.0.2"
     },
     {
       "bom-ref": "pkg:pypi/defusedxml@0.7.1",
@@ -99,16 +99,16 @@
       "version": "4.7.0"
     },
     {
-      "bom-ref": "pkg:pypi/ntc-templates@9.2.0",
+      "bom-ref": "pkg:pypi/ntc-templates@9.3.0",
       "licenses": [
         {
           "expression": "Apache-2.0"
         }
       ],
       "name": "ntc-templates",
-      "purl": "pkg:pypi/ntc-templates@9.2.0",
+      "purl": "pkg:pypi/ntc-templates@9.3.0",
       "type": "library",
-      "version": "9.2.0"
+      "version": "9.3.0"
     },
     {
       "bom-ref": "pkg:pypi/paramiko@4.0.0",
@@ -123,16 +123,16 @@
       "version": "4.0.0"
     },
     {
-      "bom-ref": "pkg:pypi/pycparser@3.0",
+      "bom-ref": "pkg:pypi/pycparser@3.12",
       "licenses": [
         {
           "expression": "BSD-3-Clause"
         }
       ],
       "name": "pycparser",
-      "purl": "pkg:pypi/pycparser@3.0",
+      "purl": "pkg:pypi/pycparser@3.12",
       "type": "library",
-      "version": "3.0"
+      "version": "3.12"
     },
     {
       "bom-ref": "pkg:pypi/pygments@2.21.0",
@@ -159,40 +159,40 @@
       "version": "1.6.2"
     },
     {
-      "bom-ref": "pkg:pypi/pyqt6@6.11.0",
+      "bom-ref": "pkg:pypi/pyqt6@6.12.0",
       "licenses": [
         {
           "expression": "GPL-3.0-only"
         }
       ],
       "name": "pyqt6",
-      "purl": "pkg:pypi/pyqt6@6.11.0",
+      "purl": "pkg:pypi/pyqt6@6.12.0",
       "type": "library",
-      "version": "6.11.0"
+      "version": "6.12.0"
     },
     {
-      "bom-ref": "pkg:pypi/pyqt6-qt6@6.11.2",
+      "bom-ref": "pkg:pypi/pyqt6-qt6@6.12.0",
       "licenses": [
         {
           "expression": "LGPL-3.0-only AND GPL-3.0-only"
         }
       ],
       "name": "pyqt6-qt6",
-      "purl": "pkg:pypi/pyqt6-qt6@6.11.2",
+      "purl": "pkg:pypi/pyqt6-qt6@6.12.0",
       "type": "library",
-      "version": "6.11.2"
+      "version": "6.12.0"
     },
     {
-      "bom-ref": "pkg:pypi/pyqt6-sip@13.12.0",
+      "bom-ref": "pkg:pypi/pyqt6-sip@13.13.0",
       "licenses": [
         {
           "expression": "BSD-2-Clause"
         }
       ],
       "name": "pyqt6-sip",
-      "purl": "pkg:pypi/pyqt6-sip@13.12.0",
+      "purl": "pkg:pypi/pyqt6-sip@13.13.0",
       "type": "library",
-      "version": "13.12.0"
+      "version": "13.13.0"
     },
     {
       "bom-ref": "pkg:pypi/pyserial@3.5",
@@ -243,16 +243,16 @@
       "version": "0.19.1"
     },
     {
-      "bom-ref": "pkg:pypi/scp@0.16.1",
+      "bom-ref": "pkg:pypi/scp@0.16.2",
       "licenses": [
         {
           "expression": "LGPL-2.1-or-later"
         }
       ],
       "name": "scp",
-      "purl": "pkg:pypi/scp@0.16.1",
+      "purl": "pkg:pypi/scp@0.16.2",
       "type": "library",
-      "version": "0.16.1"
+      "version": "0.16.2"
     },
     {
       "bom-ref": "pkg:pypi/textfsm@2.1.0",
@@ -272,25 +272,25 @@
       "dependsOn": [
         "pkg:pypi/bcrypt@5.0.0",
         "pkg:pypi/cffi@2.1.1",
-        "pkg:pypi/cryptography@50.0.1",
+        "pkg:pypi/cryptography@50.0.2",
         "pkg:pypi/defusedxml@0.7.1",
         "pkg:pypi/invoke@3.0.3",
         "pkg:pypi/markdown-it-py@4.2.0",
         "pkg:pypi/mdurl@0.1.2",
         "pkg:pypi/netmiko@4.7.0",
-        "pkg:pypi/ntc-templates@9.2.0",
+        "pkg:pypi/ntc-templates@9.3.0",
         "pkg:pypi/paramiko@4.0.0",
-        "pkg:pypi/pycparser@3.0",
+        "pkg:pypi/pycparser@3.12",
         "pkg:pypi/pygments@2.21.0",
         "pkg:pypi/pynacl@1.6.2",
-        "pkg:pypi/pyqt6-qt6@6.11.2",
-        "pkg:pypi/pyqt6-sip@13.12.0",
-        "pkg:pypi/pyqt6@6.11.0",
+        "pkg:pypi/pyqt6-qt6@6.12.0",
+        "pkg:pypi/pyqt6-sip@13.13.0",
+        "pkg:pypi/pyqt6@6.12.0",
         "pkg:pypi/pyserial@3.5",
         "pkg:pypi/pyyaml@6.0.3",
         "pkg:pypi/rich@15.0.0",
         "pkg:pypi/ruamel-yaml@0.19.1",
-        "pkg:pypi/scp@0.16.1",
+        "pkg:pypi/scp@0.16.2",
         "pkg:pypi/textfsm@2.1.0"
       ],
       "ref": "pkg:pypi/clidarvi@0.1.0a1"
@@ -312,7 +312,7 @@
         },
         {
           "name": "clidarvi:runtime-lock-sha256",
-          "value": "44643ce5bbdc6b657b214b948e6c66ed1750b9332c61b7a8034ff59c0d5b254d"
+          "value": "a23673a6efbe2d0b3168cc11a4b8519185b95f6bcbc282ce685da46a19dd7e17"
         },
         {
           "name": "clidarvi:dependency-model",
@@ -328,7 +328,7 @@
       "version": "0.1.0a1"
     }
   },
-  "serialNumber": "urn:uuid:da2c0ea6-b563-5890-81cb-4641db531bbe",
+  "serialNumber": "urn:uuid:c9277f65-cef8-5b53-a8ed-fe7a0870285d",
   "specVersion": "1.6",
   "version": 1
 }

@@ -35,14 +35,14 @@ if [ "$python_runtime" != "cpython 3.13 final" ]; then
 fi
 
 pip_version=$(python -c 'import importlib.metadata; print(importlib.metadata.version("pip"))')
-if [ "$pip_version" != "26.2.1" ]; then
-    echo "error: pip 26.2.1 is required (found: $pip_version)" >&2
+if [ "$pip_version" != "26.2.2" ]; then
+    echo "error: pip 26.2.2 is required (found: $pip_version)" >&2
     exit 1
 fi
 
 pip_tools_version=$(python -c 'import importlib.metadata; print(importlib.metadata.version("pip-tools"))')
-[ "$pip_tools_version" = "7.6.1" ] || {
-    echo "error: pip-tools 7.6.1 is required (found: $pip_tools_version)" >&2
+[ "$pip_tools_version" = "7.6.2" ] || {
+    echo "error: pip-tools 7.6.2 is required (found: $pip_tools_version)" >&2
     exit 1
 }
 

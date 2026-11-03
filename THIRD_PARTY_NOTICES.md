@@ -14,25 +14,25 @@ replace the license files or nested-component notices provided by each upstream 
 | --- | --- | --- | --- |
 | bcrypt | 5.0.0 | Apache-2.0 | [PyPI](https://pypi.org/project/bcrypt/5.0.0/) |
 | cffi | 2.1.1 | MIT-0 | [PyPI](https://pypi.org/project/cffi/2.1.1/) |
-| cryptography | 50.0.1 | Apache-2.0 OR BSD-3-Clause | [PyPI](https://pypi.org/project/cryptography/50.0.1/); wheels use OpenSSL 4.0.2 and can contain separately inventoried native/Rust material |
+| cryptography | 50.0.2 | Apache-2.0 OR BSD-3-Clause | [PyPI](https://pypi.org/project/cryptography/50.0.2/); wheels use OpenSSL 4.0.3 and can contain separately inventoried native/Rust material |
 | defusedxml | 0.7.1 | PSF-2.0 | [PyPI](https://pypi.org/project/defusedxml/0.7.1/) |
 | invoke | 3.0.3 | BSD-2-Clause | [PyPI](https://pypi.org/project/invoke/3.0.3/) |
 | markdown-it-py | 4.2.0 | MIT | [PyPI](https://pypi.org/project/markdown-it-py/4.2.0/); includes a separate MIT markdown-it notice |
 | mdurl | 0.1.2 | MIT | [PyPI](https://pypi.org/project/mdurl/0.1.2/) |
 | netmiko | 4.7.0 | MIT AND Python-2.0 | [PyPI](https://pypi.org/project/netmiko/4.7.0/); includes vendored Python `telnetlib` material |
-| ntc-templates | 9.2.0 | Apache-2.0 | [PyPI](https://pypi.org/project/ntc-templates/9.2.0/) |
+| ntc-templates | 9.3.0 | Apache-2.0 | [PyPI](https://pypi.org/project/ntc-templates/9.3.0/) |
 | paramiko | 4.0.0 | LGPL-2.1-or-later | [PyPI](https://pypi.org/project/paramiko/4.0.0/); source headers grant LGPL-2.1-or-later although wheel metadata uses deprecated `LGPL-2.1` syntax |
-| pycparser | 3.0 | BSD-3-Clause | [PyPI](https://pypi.org/project/pycparser/3.0/) |
+| pycparser | 3.12 | BSD-3-Clause | [PyPI](https://pypi.org/project/pycparser/3.12/) |
 | Pygments | 2.21.0 | BSD-2-Clause | [PyPI](https://pypi.org/project/Pygments/2.21.0/) |
 | PyNaCl | 1.6.2 | Apache-2.0 AND ISC | [PyPI](https://pypi.org/project/PyNaCl/1.6.2/); bundled libsodium material is ISC-licensed |
-| PyQt6 | 6.11.0 | GPL-3.0-only | [Riverbank](https://riverbankcomputing.com/software/pyqt/) |
-| PyQt6-Qt6 | 6.11.2 | LGPL-3.0-only AND GPL-3.0-only | [Qt licensing](https://doc.qt.io/qt-6/licensing.html); the exact wheel labels Qt LGPL v3 but also contains modules that Qt documents as GPL-only, plus separately licensed third-party components |
-| PyQt6-sip | 13.12.0 | BSD-2-Clause | [PyPI](https://pypi.org/project/PyQt6-sip/13.12.0/) |
+| PyQt6 | 6.12.0 | GPL-3.0-only | [Riverbank](https://riverbankcomputing.com/software/pyqt/) |
+| PyQt6-Qt6 | 6.12.0 | LGPL-3.0-only AND GPL-3.0-only | [Qt licensing](https://doc.qt.io/qt-6/licensing.html); the exact wheel labels Qt LGPL v3 but also contains modules that Qt documents as GPL-only, plus separately licensed third-party components |
+| PyQt6-sip | 13.13.0 | BSD-2-Clause | [PyPI](https://pypi.org/project/PyQt6-sip/13.13.0/) |
 | pyserial | 3.5 | BSD-3-Clause | [PyPI](https://pypi.org/project/pyserial/3.5/) |
 | PyYAML | 6.0.3 | MIT | [PyPI](https://pypi.org/project/PyYAML/6.0.3/) |
 | rich | 15.0.0 | MIT | [PyPI](https://pypi.org/project/rich/15.0.0/) |
 | ruamel.yaml | 0.19.1 | MIT | [PyPI](https://pypi.org/project/ruamel.yaml/0.19.1/) |
-| scp | 0.16.1 | LGPL-2.1-or-later | [PyPI](https://pypi.org/project/scp/0.16.1/) |
+| scp | 0.16.2 | LGPL-2.1-or-later | [PyPI](https://pypi.org/project/scp/0.16.2/) |
 | textfsm | 2.1.0 | Apache-2.0 | [PyPI](https://pypi.org/project/textfsm/2.1.0/) |
 
 `pyproject.toml` declares compatibility ranges for Clidarvi's four direct dependencies; those
