@@ -24,10 +24,10 @@ case "$*" in
         printf '%s\\n' "${CLIDARVI_FAKE_RUNTIME:-cpython 3.13 final}"
         ;;
     *pip-tools*)
-        printf '%s\\n' "${CLIDARVI_FAKE_PIP_TOOLS_VERSION:-7.6.1}"
+        printf '%s\\n' "${CLIDARVI_FAKE_PIP_TOOLS_VERSION:-7.6.2}"
         ;;
     *importlib.metadata*)
-        printf '%s\\n' "${CLIDARVI_FAKE_PIP_VERSION:-26.2.1}"
+        printf '%s\\n' "${CLIDARVI_FAKE_PIP_VERSION:-26.2.2}"
         ;;
 esac
 """
@@ -43,8 +43,8 @@ class CompileLocksScriptTests(unittest.TestCase):
     def _run(
         self,
         *arguments: str,
-        pip_version: str = "26.2.1",
-        pip_tools_version: str = "7.6.1",
+        pip_version: str = "26.2.2",
+        pip_tools_version: str = "7.6.2",
         runtime: str = "cpython 3.13 final",
     ) -> tuple[subprocess.CompletedProcess[str], list[str]]:
         with tempfile.TemporaryDirectory() as temporary_directory:
@@ -125,13 +125,13 @@ class CompileLocksScriptTests(unittest.TestCase):
         result, _calls = self._run(pip_version="126.2.10")
 
         self.assertEqual(result.returncode, 1)
-        self.assertIn("pip 26.2.1 is required (found: 126.2.10)", result.stderr)
+        self.assertIn("pip 26.2.2 is required (found: 126.2.10)", result.stderr)
 
     def test_pip_tools_version_must_match_exactly(self):
         result, _calls = self._run(pip_tools_version="17.6.10")
 
         self.assertEqual(result.returncode, 1)
-        self.assertIn("pip-tools 7.6.1 is required (found: 17.6.10)", result.stderr)
+        self.assertIn("pip-tools 7.6.2 is required (found: 17.6.10)", result.stderr)
 
     def test_runtime_must_be_final_cpython_313(self):
         for runtime in ("pypy 3.13 final", "cpython 3.13 beta"):

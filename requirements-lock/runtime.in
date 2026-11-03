@@ -6,4 +6,4 @@
 defusedxml==0.7.1
 netmiko==4.7.0
 paramiko==4.0.0
-PyQt6==6.11.0
+PyQt6==6.12.0

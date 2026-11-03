@@ -100,6 +100,16 @@ release yet.
 
 ### Changed
 
+- Refreshed the reviewed CPython 3.13 runtime snapshot to PyQt6 6.12.0 (PyQt6-Qt6 6.12.0,
+  PyQt6-sip 13.13.0), cryptography 50.0.2 with OpenSSL 4.0.3, ntc-templates 9.3.0, pycparser 3.12,
+  and scp 0.16.2; regenerated the binary-only hashed locks, third-party notices, and CycloneDX
+  SBOM. Netmiko deliberately stays at the audited 4.7.0: moving the Experimental Automation gate
+  to 4.8.0 first requires re-auditing that release's hidden driver-setup behavior.
+- Moved the pinned lock toolchain to pip 26.2.2, pip-tools 7.6.2, setuptools 84.2.1, and
+  build 1.6.1, keeping `scripts/compile_locks.sh`, its tests, and `[build-system]` in lockstep;
+  the development snapshot picks up Ruff 0.17.3 and current transitive releases. The declared
+  `pyproject.toml` compatibility ranges are unchanged so the floating jobs keep testing
+  latest-in-range.
 - Refreshed the pinned build and development snapshots to setuptools 84.1.0, urllib3 2.8.0,
   certifi 2026.10.23, filelock 4.2.6, and msgpack 1.2.4, clearing the advisories pip-audit
   reported against the previous pins; regenerated the hashed locks. The pinned runtime snapshot
