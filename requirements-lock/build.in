@@ -4,7 +4,7 @@ build==1.6.1
 # unconditional so the cross-platform hashed lock is complete when compiled
 # on macOS or Linux.
 colorama==0.4.6
-pip==26.2.2
+pip==26.3
 pip-tools==7.6.2
 setuptools==84.2.1
 wheel==0.48.0
